@@ -18,4 +18,4 @@ spec:
                    name: my-database-secret
                    key: password
             - name: JAVA_OPTIONS
-              value: "-Dspring.profiles.active=openshift"
+              value: "-Dspring.profiles.active=local"
