@@ -19,7 +19,7 @@ public class WebSocketEventListener implements ApplicationListener<SessionSubscr
 
     @Override
     public void onApplicationEvent(SessionSubscribeEvent event) {
-        template.convertAndSend("/topic/greetings", new Greeting("Hello1"));
+        logger.info(event.getMessage().toString());
         template.convertAndSend("/topic/greetings", new Greeting("Hello2"));
     }
 
