@@ -19,7 +19,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+        // added  HttpHandshakeInterceptor to session Id in controller
+        registry.addEndpoint("/ws").addInterceptors(new HttpHandshakeInterceptor()).setAllowedOrigins("*").withSockJS();
     }
 
     // to prevent order of messages

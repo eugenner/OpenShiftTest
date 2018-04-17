@@ -12,7 +12,12 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private boolean started;
+    private boolean started; // sign of starting of line
+
+    private String sessionId;
+
+    private String strokeColor;
+
 
     public Integer getId() {
         return id;
@@ -32,7 +37,18 @@ public class Point {
 
 
     private int x, y;
+
+
     public Point() {}
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public int getX() {
         return x;
     }
@@ -48,4 +64,13 @@ public class Point {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String getStrokeColor() {
+        return strokeColor;
+    }
+
+    public void setStrokeColor(String strokeColor) {
+        this.strokeColor = strokeColor;
+    }
+
 }

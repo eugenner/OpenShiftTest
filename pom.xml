@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
+        <version>1.5.11.RELEASE</version>
     </parent>
 
     <properties>
@@ -24,7 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <maven.min.version>3.3.9</maven.min.version>
-        <postgresql.version>9.4.1212</postgresql.version>
+        <!--<postgresql.version>9.4.1212</postgresql.version>-->
         <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
         <spring-boot.bom.version>1.5.8.Final</spring-boot.bom.version>
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
@@ -73,7 +73,13 @@
             <scope>test</scope>
         </dependency>
 
-
+        <!-- h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!--WebSocket dependency-->
         <dependency>
@@ -137,13 +143,14 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
+            <!--<dependencies>-->
+                <!--<dependency>-->
+                    <!--<groupId>com.h2database</groupId>-->
+                    <!--<artifactId>h2</artifactId>-->
+                    <!--&lt;!&ndash;<version>1.4.197</version>&ndash;&gt;-->
+                    <!--<scope>runtime</scope>-->
+                <!--</dependency>-->
+            <!--</dependencies>-->
             <build>
                 <plugins>
                     <plugin>
