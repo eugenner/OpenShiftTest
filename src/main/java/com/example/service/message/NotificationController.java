@@ -15,12 +15,9 @@ import java.util.List;
 
 
 @Controller
-public class GreetingController {
+public class NotificationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
-
-    @Autowired
-    private ClientMessageRepository repository;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationController.class);
 
     @Autowired
     private PointRepository pointRepository;
@@ -28,19 +25,10 @@ public class GreetingController {
     @Autowired
     private SimpMessagingTemplate template;
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(ClientMessage clientMessage, Message message) throws Exception {
-        logger.info("hello message: " + message);
-        // persisting message
-        repository.save(clientMessage);
-        return new Greeting("Hello, " + clientMessage.getName() + " x=" + clientMessage.getX() + " y=" + clientMessage.getY() + "!");
-    }
-
     // it's possible to send data back to client periodically
-//    @Scheduled(fixedDelay = 2000)
+    //@Scheduled(fixedDelay = 2000)
     public void greeting() throws Exception {
-        template.convertAndSend("/topic/flood", new Greeting("Flooding!"));
+        template.convertAndSend("/topic/flood", new Notification("Flooding!"));
     }
 
     @MessageMapping("/broadcast")
@@ -65,9 +53,9 @@ public class GreetingController {
     }
 
     @MessageMapping("/clean")
-    @SendTo("/topic/greetings")
-    public Greeting cleanData(String command) throws Exception {
+    @SendTo("/topic/notify")
+    public Notification cleanData(String command) throws Exception {
         pointRepository.deleteAll();
-        return new Greeting("clean");
+        return new Notification("clean");
     }
 }

@@ -18,6 +18,9 @@ public class Point {
 
     private String strokeColor;
 
+    private int x, y;
+
+    public Point() {}
 
     public Integer getId() {
         return id;
@@ -36,10 +39,7 @@ public class Point {
     }
 
 
-    private int x, y;
 
-
-    public Point() {}
 
     public String getSessionId() {
         return sessionId;

@@ -1,42 +1,33 @@
 
 $(document).ready(function(){
 
+    var userCanvas = document.getElementById('userCanvas');
+    var userContext = userCanvas.getContext('2d');
+    userCanvas.style.width='100%';
+    userCanvas.style.height='100%';
+    userCanvas.width  = userCanvas.offsetWidth;
+    userCanvas.height = userCanvas.offsetHeight;
 
-    var canvas1 = document.getElementById('canvas1');
-    context1 = canvas1.getContext('2d');
-    canvas1.style.width='100%';
-    canvas1.style.height='100%';
-    canvas1.width  = canvas1.offsetWidth;
-    canvas1.height = canvas1.offsetHeight;
+    var publicCanvas = document.getElementById('publicCanvas');
+    var publicContext = publicCanvas.getContext('2d');
+    publicCanvas.style.width='100%';
+    publicCanvas.style.height='100%';
+    publicCanvas.width  = publicCanvas.offsetWidth;
+    publicCanvas.height = publicCanvas.offsetHeight;
 
-    var canvas2 = document.getElementById('canvas2');
-    context2 = canvas2.getContext('2d');
-    canvas2.style.width='100%';
-    canvas2.style.height='100%';
-    canvas2.width  = canvas2.offsetWidth;
-    canvas2.height = canvas2.offsetHeight;
-
-
-    // WebSocket start
 
     var stompClient = null;
     var x, y;
 
-    function setConnected(connected) {
-        if(connected) {
-            $('#clean').css('background-color', 'rgba(0, 100, 0, 0.5)');
-        } else {
-            $('#clean').css('background-color', 'rgba(100, 100, 0, 0.5)');
-        }
-    }
 
     function connect() {
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
+        stompClient.debug = null;
         stompClient.connect({}, function (frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/greetings', function (message) {
+            stompClient.subscribe('/topic/notify', function (message) {
                 if(JSON.parse(message.body).content == 'clean')
                     cleanCanvas();
                 console.log(message)
@@ -55,66 +46,49 @@ $(document).ready(function(){
         }
     }
 
-    sessions = {};
+    function setConnected(connected) {
+        // change color of clean button to show connections state
+        if(connected) {
+            $('#clean').css('background-color', 'rgba(0, 100, 0, 0.5)');
+        } else {
+            $('#clean').css('background-color', 'rgba(100, 100, 0, 0.5)');
+        }
+    }
+
+    var sessions = {};
     function drawData(data) {
         var currentSession = sessions[data.sessionId];
         if(currentSession) {
             if (!data.started) {
-                context2.beginPath();
-                context2.moveTo(currentSession.x, currentSession.y);
-                context2.lineTo(data.x, data.y);
-                context2.strokeStyle = data.strokeColor;
-                context2.stroke();
+                publicContext.beginPath();
+                publicContext.moveTo(currentSession.x, currentSession.y);
+                publicContext.lineTo(data.x, data.y);
+                publicContext.strokeStyle = data.strokeColor;
+                publicContext.stroke();
             }
         }
         sessions[data.sessionId] = data;
     }
 
-    function disconnect() {
-        if (stompClient !== null) {
-            stompClient.disconnect();
-        }
-        setConnected(false);
-        console.log("Disconnected");
-    }
-
-    function sendName() {
-        stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val(), 'x': x, 'y': y}));
-    }
-
-    function showGreeting(message) {
-        //$("#greetings").append("<tr><td>" + message + "</td></tr>");
-        console.log('message: ' + message)
-    }
-
     function cleanCanvas() {
-        context1.clearRect(0, 0, canvas1.width, canvas1.height);
-        context2.clearRect(0, 0, canvas2.width, canvas2.height);
+        userContext.clearRect(0, 0, userCanvas.width, userCanvas.height);
+        publicContext.clearRect(0, 0, publicCanvas.width, publicCanvas.height);
     }
 
     function clean() {
         stompClient.send("/app/clean", {}, "clean");
-        cleanCanvas();
     }
 
-    function getQR() {
-
-    }
-
-
-    $( "#clean" ).click(function() { clean(); });
+    $("#clean").click(function() { clean(); });
 
 
     // When the user clicks on div, open the popup
-    $( ".popup" ).click(function() {
+    $(".popup").click(function() {
         document.getElementById("myPopup").classList.toggle("show");
     });
 
     var imgPath = $("#qr-img").attr('src').replace('url_subst', location.href);
     $("#qr-img").attr('src', imgPath);
-
-    // WebSocket end
-
 
 
     var started = false;
@@ -148,14 +122,14 @@ $(document).ready(function(){
 
         if (leftButtonDown) {
             if (!started) {
-                context1.beginPath();
-                context1.moveTo(x, y);
+                userContext.beginPath();
+                userContext.moveTo(x, y);
                 started = true;
                 startLine = true;
             } else {
-                context1.lineTo(x, y);
-                context1.strokeStyle = userStrokeColor;
-                context1.stroke();
+                userContext.lineTo(x, y);
+                userContext.strokeStyle = userStrokeColor;
+                userContext.stroke();
                 startLine = false;
             }
             stompClient.send("/app/broadcast", {}, JSON.stringify({'x': x, 'y': y, 'started': startLine, 'strokeColor': userStrokeColor}));
@@ -186,7 +160,7 @@ $(document).ready(function(){
         }
     }
 
-     //Prevent scrolling when touching the canvas
+     // Prevent scrolling when touching the canvas
     document.body.addEventListener("touchstart", function (e) {
         if (e.target == canvas) {
             e.preventDefault();
@@ -205,7 +179,7 @@ $(document).ready(function(){
 
     $(document).bind('touchstart mousedown', mouseDownHandler);
     $(document).bind('touchend mouseup', mouseUpHandler);
-    $(document).bind('mousemove touchmove', moveHandler);
+    $(document).bind('touchmove mousemove', moveHandler);
 
 
 
@@ -215,8 +189,6 @@ $(document).ready(function(){
             userStrokeColor = tinycolor.toHexString();
         }
     });
-
-
 
     connect();
 

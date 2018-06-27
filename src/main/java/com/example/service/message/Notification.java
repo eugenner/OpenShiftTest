@@ -1,13 +1,13 @@
 package com.example.service.message;
 
-public class Greeting {
+public class Notification {
 
     private String content;
 
-    public Greeting() {
+    public Notification() {
     }
 
-    public Greeting(String content) {
+    public Notification(String content) {
         this.content = content;
     }
 
