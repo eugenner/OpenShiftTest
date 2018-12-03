@@ -19,21 +19,25 @@
             outline: 0;
             font-family: 'Open Sans', serif;
         }
-        body {
-            background-image: url("img/wildtextures_white-brick-wall.jpg");
-            background-position: center;
-            background-repeat: repeat;
-            background-size: 30%;
-
-            overscroll-behavior-y: none;
-
-        }
 
         .popuptext {
             display: none;
             padding-top: 10px;
         }
 
+        #bg {
+            background-color: lightblue;
+            background-image: url('img/wildtextures_white-brick-wall.jpg');
+            background-position: absolute;
+            background-size: 500px 500px;
+            background-repeat: repeat;
+            z-index: -1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
 
     </style>
 
@@ -56,8 +60,9 @@
         <canvas id="userCanvas" style="width: 100%; height: 100%; position: absolute; overscroll-behavior-y: none;"></canvas>
         <canvas id="publicCanvas" style="width: 100%; height: 100%; position: absolute; overscroll-behavior-y: none;"></canvas>
     </div>
+    <div id="bg"></div>
 
-    <div class="form-inline" style="width: 200px;">
+    <div class="form-inline" style="width: 200px; position: absolute; ">
         <div for="clean" style="position: absolute; font-size: 24px; top: 10px; left: 25px;"><div class="popup">Paintwall
             <span class="popuptext" id="myPopup"><img id="qr-img" src="http://qrickit.com/api/qr.php?d=url_subst&addtext=Get+the+link&txtcolor=442EFF&fgdcolor=000000
 &bgdcolor=FFFFFF&logotext=QRickit&qrsize=150&t=p&e=m"></span>

@@ -190,6 +190,23 @@ $(document).ready(function(){
         }
     });
 
+    $(window).on('resize', function(){
+        var win = $(this); //this = window
+        console.log('resizing!!! lb: ' + leftButtonDown);
+
+        userCanvas.style.width='100%';
+        userCanvas.style.height='100%';
+        userCanvas.width  = userCanvas.offsetWidth;
+        userCanvas.height = userCanvas.offsetHeight;
+
+        publicCanvas.style.width='100%';
+        publicCanvas.style.height='100%';
+        publicCanvas.width  = publicCanvas.offsetWidth;
+        publicCanvas.height = publicCanvas.offsetHeight;
+
+        stompClient.send("/app/init", {}, "init");
+    });
+
     connect();
 
 });

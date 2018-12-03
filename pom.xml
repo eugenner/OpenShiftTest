@@ -66,7 +66,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-         <!--Testing-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -77,7 +76,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.197</version>
+            <!--<version>1.4.197</version>-->
             <scope>runtime</scope>
         </dependency>
 
@@ -112,6 +111,15 @@
             <version>3.1.0</version>
         </dependency>
 
+
+
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -122,7 +130,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <profiles>
-                        <profile>local</profile>
+                        <profile>openshift</profile>
                     </profiles>
                     <classifier>exec</classifier>
                 </configuration>
@@ -138,40 +146,16 @@
     </build>
 
     <profiles>
+
         <profile>
             <id>local</id>
+        </profile>
+
+        <profile>
+            <id>openshift</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <!--<dependencies>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.h2database</groupId>-->
-                    <!--<artifactId>h2</artifactId>-->
-                    <!--&lt;!&ndash;<version>1.4.197</version>&ndash;&gt;-->
-                    <!--<scope>runtime</scope>-->
-                <!--</dependency>-->
-            <!--</dependencies>-->
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>fabric8-maven-plugin</artifactId>
-                        <version>${fabric8-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>fmp</id>
-                                <goals>
-                                    <goal>resource</goal>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>openshift</id>
             <dependencies>
                 <!-- TODO: ADD PostgreSQL database dependency here -->
             </dependencies>

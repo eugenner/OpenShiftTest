@@ -6,6 +6,13 @@ spec:
   template:
     spec:
       containers:
+#        - readinessProbe:
+#          initialDelaySeconds: 180
+#        - livenessProbe:
+#            httpGet:
+#              path: "/"
+#              port: 8080
+#            initialDelaySeconds: 180
         - env:
             - name: DB_USERNAME
               valueFrom:
@@ -18,4 +25,4 @@ spec:
                    name: my-database-secret
                    key: password
             - name: JAVA_OPTIONS
-              value: "-Dspring.profiles.active=local"
+              value: "-Dspring.profiles.active=openshift"
